@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KotlinLearning">
         <activity android:name=".GenerateActivity"></activity>
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.PlayListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
