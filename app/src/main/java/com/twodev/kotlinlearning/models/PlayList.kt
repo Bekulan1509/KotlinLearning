@@ -1,6 +1,5 @@
 package com.twodev.kotlinlearning.models
 
-import com.google.gson.annotations.SerializedName
 
 data class PlayList(
     var kind: String? = null,

@@ -1,38 +1,46 @@
 package com.twodev.kotlinlearning.Repository
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
 import com.twodev.kotlinlearning.data.network.RetrofitClient
 import com.twodev.kotlinlearning.data.network.YoutubeApi
-import com.twodev.kotlinlearning.models.PlayList
-import retrofit2.Call
-import retrofit2.Response
+import kotlinx.coroutines.Dispatchers
+import java.lang.Exception
 
 class YoutubeRepository {
 
 
     private var api: YoutubeApi = RetrofitClient.instanceRetrofit()
 
-    val data = MutableLiveData<PlayList?>()
-    private var part = "snippet"
+    private var part: String? = null
     private var key = "AIzaSyCFKTDYFDNxQ7CustuKGvfbzWWDgSzOKYQ"
-    private var channelId = "UCeObZv89Stb2xLtjLJ0De3Q"
+    private var id: String? = null
 
 
-
-    fun fetchPlayListsFromNetwork(): MutableLiveData<PlayList?> {
-        api.fetPlayLists(part, key, channelId,null).enqueue(object : retrofit2.Callback<PlayList?> {
-            override fun onResponse(call: Call<PlayList?>, response: Response<PlayList?>) {
-                data.value = response.body()
-                Log.d("tag1", "onResponse: everything is great")
-            }
-
-            override fun onFailure(call: Call<PlayList?>, t: Throwable) {
-                data.value = null
-                Log.e("tag1", "onFailure: ",t)
-            }
-
-        })
-        return data
+    fun fetchPlayListsFromNetwork() = liveData(Dispatchers.IO) {
+        part = "snippet"
+        id = "UC3w7ISVGFJw7Ay2kCuc07Cw"
+        emit(Resource.loading(data = null))
+        try {
+            emit(Resource.success(data = api.fetPlayLists(part, id, key)))
+        } catch (e: Exception) {
+            emit(Resource.error(data = null, message = e.message ?: " Error"))
+            Log.e("tag1", "fetchPlayListsFromNetwork: ", e)
+        }
     }
+
+    fun fetchPlayListDetailFromNetwork(playListDetailId: String?) = liveData(Dispatchers.IO) {
+        part = "snippet"
+        id = playListDetailId
+        emit(Resource.loading(data = null))
+        try {
+            Log.d("tag1", "fetchPlayListDetailFromNetwork: ${id.toString()}")
+            emit(Resource.success(data = api.fetPlayListsDetails(part, id, key)))
+        } catch (e: Exception) {
+            emit(Resource.error(data = null, message = e.message ?: " Error"))
+            Log.e("tag1", "fetchPlayListDetailFromNetwork: ", e)
+        }
+    }
+
+
 }

@@ -1,4 +1,4 @@
-package com.twodev.kotlinlearning.ui.Adapters
+package com.twodev.kotlinlearning.ui.playlist.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +10,7 @@ import com.twodev.kotlinlearning.R
 import com.twodev.kotlinlearning.loadImage
 import com.twodev.kotlinlearning.models.PlayListItems
 
-class MainAdapter : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
+class MainAdapter(private var listener:(Int)->Unit) : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
     var list = mutableListOf<PlayListItems?>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
@@ -23,25 +23,30 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
         return list.size
     }
 
-    override fun onBindViewHolder(holder: MainAdapter.MainViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
         list[position]?.let { holder.bind(it) }
+
+        holder.itemView.setOnClickListener{
+            listener(position)
+        }
     }
 
     fun addItems(items: MutableList<PlayListItems>?) {
-        items?.let { list.addAll(it) }
+        items?.let {list.addAll(it) }
         notifyDataSetChanged()
     }
 
 
     class MainViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(items: PlayListItems) {
+
+            countyTV.text = items.contentDetails?.itemCount
             titleTV.text = items.snippet?.title
-            descriptionTV.text = items.snippet?.description
             items.snippet?.thumbnails?.medium?.url?.let { itemImage.loadImage(it)}
         }
 
-       private var descriptionTV: TextView = itemView.findViewById(R.id.item_county_textView)
-        private var titleTV: TextView = itemView.findViewById(R.id.item_title_textView)
+       private var titleTV: TextView = itemView.findViewById(R.id.item_title_textView)
+        private var countyTV: TextView = itemView.findViewById(R.id.item_county_textView)
         private var itemImage: ImageView = itemView.findViewById(R.id.item_image)
     }
 }
