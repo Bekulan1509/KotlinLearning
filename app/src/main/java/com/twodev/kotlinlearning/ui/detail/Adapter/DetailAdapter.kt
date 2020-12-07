@@ -8,11 +8,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.twodev.kotlinlearning.R
 import com.twodev.kotlinlearning.loadImage
+import com.twodev.kotlinlearning.models.DetailItems
 import com.twodev.kotlinlearning.models.PlayList
 import com.twodev.kotlinlearning.models.PlayListItems
 
 class DetailAdapter(private var listener:(Int)->Unit) : RecyclerView.Adapter<DetailAdapter.DetailViewHolder>() {
-    private var list = mutableListOf<PlayListItems?>()
+    private var list = mutableListOf<DetailItems?>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_detail, parent, false)
@@ -31,16 +32,16 @@ class DetailAdapter(private var listener:(Int)->Unit) : RecyclerView.Adapter<Det
         return list.size
     }
 
-    fun addItems(items: MutableList<PlayListItems>?) {
+    fun addItems(items: MutableList<DetailItems>?) {
         items?.let { list.addAll(it) }
         notifyDataSetChanged()
     }
 
     class DetailViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun onBind(playListItems: PlayListItems?) {
+        fun onBind(detailItems: DetailItems) {
 
-            playListItems?.snippet?.thumbnails?.medium?.url?.let { itemImage.loadImage(it) }
-            itemTitle.text = playListItems?.snippet?.title
+            detailItems?.snippet?.thumbnails?.medium?.url?.let { itemImage.loadImage(it) }
+            itemTitle.text = detailItems?.snippet?.title
         }
 
 

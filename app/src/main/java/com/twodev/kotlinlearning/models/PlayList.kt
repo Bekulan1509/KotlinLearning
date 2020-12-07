@@ -1,7 +1,14 @@
 package com.twodev.kotlinlearning.models
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.twodev.kotlinlearning.models.converter.PlayListItemsConverter
 
+@Entity(tableName = "playList")
 data class PlayList(
+    @PrimaryKey(autoGenerate = true)
+    var id:Int?=null,
     var kind: String? = null,
     var etag: String? = null,
     var items: MutableList<PlayListItems>? = null,

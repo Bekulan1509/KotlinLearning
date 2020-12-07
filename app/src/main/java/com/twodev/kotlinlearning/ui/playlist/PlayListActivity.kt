@@ -12,11 +12,13 @@ import com.twodev.kotlinlearning.Repository.Status
 import com.twodev.kotlinlearning.showToast
 import com.twodev.kotlinlearning.ui.playlist.adapter.MainAdapter
 import com.twodev.kotlinlearning.ui.detail.DetailActivity
+import com.twodev.kotlinlearning.ui.detail.DetailViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.android.ext.android.inject
 
-class PlayListActivity : AppCompatActivity() {
+class PlayListActivity() : AppCompatActivity() {
 
-    lateinit var viewModel: PlayListViewModel
+    private val viewModel by inject<PlayListViewModel>()
 
     private lateinit var adapter: MainAdapter
 
@@ -24,7 +26,6 @@ class PlayListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        viewModel = ViewModelProvider(this).get(PlayListViewModel::class.java)
         setUpAdapter()
         setUpData()
     }

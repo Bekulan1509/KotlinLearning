@@ -1,10 +1,8 @@
 package com.twodev.kotlinlearning.data.network
 
 import com.twodev.kotlinlearning.models.PlayList
-import com.twodev.kotlinlearning.models.PlayListDetail
-import retrofit2.Call
+import com.twodev.kotlinlearning.models.DetailPlayList
 import retrofit2.http.GET
-import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface YoutubeApi {
@@ -20,7 +18,7 @@ interface YoutubeApi {
         @Query("part") part:String?,
         @Query("playlistId") playlistId:String?,
         @Query("key") key:String?,
-    ):PlayList
+    ):DetailPlayList
 
 
 }

@@ -10,11 +10,11 @@ import com.twodev.kotlinlearning.models.PlayListItems
 import retrofit2.Call
 
 
-class PlayListViewModel : ViewModel() {
+class PlayListViewModel(var youtubeRepository: YoutubeRepository) : ViewModel() {
 
 
     fun fetchPlayLists(): LiveData<Resource<PlayList>> {
-        return YoutubeRepository().fetchPlayListsFromNetwork()
+        return youtubeRepository.fetchPlayListsFromNetwork()
     }
 
 

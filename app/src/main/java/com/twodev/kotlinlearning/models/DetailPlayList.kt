@@ -1,6 +1,12 @@
 package com.twodev.kotlinlearning.models
 
-data class PlayListDetail(
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "detail")
+data class DetailPlayList(
+    @PrimaryKey(autoGenerate = true)
+    var id:Int? = null,
     var kind: String? = null,
     var etag: String? = null,
     var nextPageToken: String? = null,
