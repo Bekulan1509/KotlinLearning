@@ -9,7 +9,7 @@ import com.twodev.kotlinlearning.models.PlayList
 @Dao
 interface PlayListDao {
     @Query("SELECT*FROM playList")
-    suspend fun getList(): PlayList
+    suspend fun getPlayList(): PlayList
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPlayList(items: PlayList)

@@ -1,36 +1,31 @@
 package com.twodev.kotlinlearning.ui.detail
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
+import android.content.Intent
 import android.util.Log
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.twodev.kotlinlearning.R
-import com.twodev.kotlinlearning.Repository.Resource
-import com.twodev.kotlinlearning.Repository.Status
-import com.twodev.kotlinlearning.models.DetailPlayList
+import com.twodev.kotlinlearning.base.BaseActivity
+import com.twodev.kotlinlearning.models.DetailItems
+import com.twodev.kotlinlearning.ui.DetailVideo.DetailVideoActivity
 import com.twodev.kotlinlearning.ui.detail.Adapter.DetailAdapter
 import kotlinx.android.synthetic.main.activity_detail.*
 import org.koin.android.ext.android.inject
 
-class DetailActivity : AppCompatActivity() {
+class DetailActivity : BaseActivity<DetailViewModel>(R.layout.activity_detail) {
 
-    private val viewModel by inject<DetailViewModel>()
+    override val viewModel by inject<DetailViewModel>()
+
+    private var getId: String? = null
 
     private lateinit var adapter: DetailAdapter
-    private lateinit var playListDetails: Resource<DetailPlayList>
+    private lateinit var playListDetails: MutableList<DetailItems>
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail)
-
+    override fun setupViews() {
         setUpAdapter()
-        getUpData()
-        setUpData()
     }
 
-    private fun setUpData() {
-
+    override fun setupLiveData() {
+        getUpData()
     }
 
     private fun setUpAdapter() {
@@ -38,27 +33,25 @@ class DetailActivity : AppCompatActivity() {
         recycler_view_detail.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recycler_view_detail.adapter = adapter
-
     }
 
     private fun itemClick(pos: Int) {
-        title_detail_textView.text = playListDetails.data?.items?.get(pos)?.snippet?.title
-        description_detail_textView.text = playListDetails.data?.items?.get(pos)?.snippet?.description
 
+        val intent = Intent(this, DetailVideoActivity::class.java)
+        startActivity(intent)
+
+//        title_detail_textView.text = playListDetails[pos].snippet?.title
+//        description_detail_textView.text = playListDetails[pos].snippet?.description
     }
 
     private fun getUpData() {
-        val getId: String? = intent.getStringExtra("idKey")
-        viewModel.fetchPlayListDetails(getId).observe(this, Observer { it ->
-            when (it.status) {
-                Status.SUCCESS ->
-                    it.data?.items?.let { adapter.addItems(it) }
-
-            }
+        getId = intent.getStringExtra("idKey")
+        viewModel.fetchPlayListDetails(getId)
+        viewModel.details.observe(this, {
+            adapter.addItems(it)
             playListDetails = it
-            title_detail_textView.text = it.data?.items?.get(0)?.snippet?.title
-            description_detail_textView.text = it.data?.items?.get(0)?.snippet?.description
-
+            title_detail_textView.text = it[0].snippet?.title
+            description_detail_textView.text = it[0].snippet?.description
         })
     }
 }

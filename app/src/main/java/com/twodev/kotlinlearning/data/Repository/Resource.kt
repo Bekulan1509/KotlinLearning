@@ -1,11 +1,13 @@
-package com.twodev.kotlinlearning.Repository
+package com.twodev.kotlinlearning.data.Repository
 
 import android.util.Log
 
 class Resource<out T>(val status: Status, val data: T?, val message: String?) {
     companion object {
-        fun <T> fetchFromDb(data: T): Resource<T> =
-            Resource(status = Status.SUCCESS, data = data, message = null)
+        fun <T> fetchFromDb(data: T): Resource<T> {
+            return if (data != null) Resource(status = Status.SUCCESS, data = data, message = null)
+            else Resource(status = Status.ERROR, data = data, message = null)
+        }
 
         fun <T> success(data: T): Resource<T> =
             Resource(status = Status.SUCCESS, data = data, message = null)

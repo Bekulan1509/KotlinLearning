@@ -3,7 +3,7 @@
     package="com.twodev.kotlinlearning">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:name=".App.YoutubeApp"
@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.KotlinLearning">
-        <activity android:name=".ui.detail.DetailActivity"></activity>
+        <activity android:name=".ui.DetailVideo.DetailVideoActivity"></activity>
+        <activity android:name=".ui.detail.DetailActivity" />
         <activity android:name=".GenerateActivity" />
         <activity android:name=".ui.playlist.PlayListActivity">
             <intent-filter>

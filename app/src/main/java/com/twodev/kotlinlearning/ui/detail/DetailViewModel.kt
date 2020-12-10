@@ -1,15 +1,23 @@
 package com.twodev.kotlinlearning.ui.detail
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import com.twodev.kotlinlearning.Repository.Resource
-import com.twodev.kotlinlearning.Repository.YoutubeRepository
-import com.twodev.kotlinlearning.models.DetailPlayList
+import androidx.lifecycle.MutableLiveData
+import com.twodev.kotlinlearning.data.Repository.Status
+import com.twodev.kotlinlearning.data.Repository.YoutubeRepository
+import com.twodev.kotlinlearning.base.BaseViewModel
+import com.twodev.kotlinlearning.models.DetailItems
 
 
-class DetailViewModel(var repository: YoutubeRepository) : ViewModel() {
+class DetailViewModel(var repository: YoutubeRepository) : BaseViewModel() {
+    var details = MutableLiveData<MutableList<DetailItems>>()
 
-    fun fetchPlayListDetails(playListDetailId:String?): LiveData<Resource<DetailPlayList>> {
-        return repository.fetchPlayListDetailFromNetwork(playListDetailId)
+
+
+    fun fetchPlayListDetails(playListDetailId: String?) {
+        repository.fetchPlayListDetailFromNetwork(playListDetailId).observeForever {
+            when (it.status) {
+                Status.SUCCESS -> details.postValue(it.data?.items!!)
+                Status.ERROR -> errorMessage.postValue(it.message.toString())
+            }
+        }
     }
 }

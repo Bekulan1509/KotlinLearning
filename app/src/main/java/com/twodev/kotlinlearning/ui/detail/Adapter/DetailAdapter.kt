@@ -9,11 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.twodev.kotlinlearning.R
 import com.twodev.kotlinlearning.loadImage
 import com.twodev.kotlinlearning.models.DetailItems
-import com.twodev.kotlinlearning.models.PlayList
-import com.twodev.kotlinlearning.models.PlayListItems
 
 class DetailAdapter(private var listener:(Int)->Unit) : RecyclerView.Adapter<DetailAdapter.DetailViewHolder>() {
-    private var list = mutableListOf<DetailItems?>()
+     var list = mutableListOf<DetailItems?>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_detail, parent, false)

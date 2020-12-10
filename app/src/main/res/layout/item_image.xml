@@ -24,7 +24,7 @@
             android:layout_width="150dp"
             android:layout_height="60dp"
             android:layout_marginTop="60dp"
-            android:text="Playlist"
+            android:text="@string/play_list"
             android:textColor="@android:color/white"
             android:background="#CD000000"
             android:textAlignment="center" />
